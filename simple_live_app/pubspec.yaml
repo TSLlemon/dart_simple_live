@@ -36,7 +36,7 @@ dependencies:
   flutter_smart_dialog: 4.9.8+10 #各种弹窗 Toast/Dialog/Popup
   sticky_headers: ^0.3.0+2 #吸顶
   lottie: 3.5.1 #lottie动画
-  canvas_danmaku: 0.3.2
+  canvas_danmaku: 0.2.7
   # ns_danmaku: #弹幕
   #   git:
   #     url: https://github.com/xiaoyaocz/flutter_ns_danmaku.git
@@ -53,11 +53,11 @@ dependencies:
   image_gallery_saver_plus: ^4.0.1 #图片保存到相册
   screen_brightness: 2.1.11 #亮度控制
   auto_orientation_v2: 2.4.6 #屏幕方向
-  wakelock_plus: 1.7.0 #屏幕常亮
+  wakelock_plus: 1.5.2 #屏幕常亮
   file_picker: 10.3.10 #文件选择
   window_manager: 0.5.2 #窗口管理
   floating: ^6.0.0 #PIP画中画
-  flutter_inappwebview: 6.2.0-beta.3 #WebView
+  flutter_inappwebview: 6.1.5 #WebView
   connectivity_plus: 7.3.1 #网络状态
   qr_code_scanner_plus: 2.2.0 #二维码扫描
   volume_controller: 3.6.1 #音量控制
