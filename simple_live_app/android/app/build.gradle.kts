@@ -68,3 +68,19 @@ android {
 flutter {
     source = "../.."
 }
+
+// Force all subprojects (plugin modules) to a consistent JVM target.
+// auto_orientation_v2 compiles Java to 1.8 but Kotlin to 17 under KGP 2.2.20.
+subprojects {
+    afterEvaluate {
+        tasks.withType<JavaCompile>().configureEach {
+            sourceCompatibility = JavaVersion.VERSION_17.toString()
+            targetCompatibility = JavaVersion.VERSION_17.toString()
+        }
+        tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+            kotlinOptions {
+                jvmTarget = JavaVersion.VERSION_17.toString()
+            }
+        }
+    }
+}
