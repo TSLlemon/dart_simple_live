@@ -72,24 +72,23 @@ flutter {
 }
 
 // Force all subprojects (plugin modules) to a consistent JVM target.
-// auto_orientation_v2 compiles Java to 1.8 but Kotlin to 17 under KGP 2.2.20.
-// Note: Kotlin default JVM target comes from the Java compileOptions of each
-// module, so aligning compileOptions (rather than overriding tasks) fixes both.
+// auto_orientation_v2 sets no compileOptions, so Java defaults to 1.8 while
+// KGP 2.2.20 defaults Kotlin to 17. Fix by setting compileOptions eagerly on
+// the android extension BEFORE evaluation finishes (plugins {} block order).
 subprojects {
-    afterEvaluate {
-        extensions.findByType<com.android.build.gradle.BaseExtension>()?.apply {
+    plugins.withId("com.android.library") {
+        extensions.configure<com.android.build.gradle.LibraryExtension>("android") {
             compileOptions {
                 sourceCompatibility = JavaVersion.VERSION_17
                 targetCompatibility = JavaVersion.VERSION_17
             }
         }
-        tasks.withType<JavaCompile>().configureEach {
-            sourceCompatibility = JavaVersion.VERSION_17.toString()
-            targetCompatibility = JavaVersion.VERSION_17.toString()
-        }
-        tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-            compilerOptions {
-                jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+    }
+    plugins.withId("com.android.application") {
+        extensions.configure<com.android.build.gradle.AppExtension>("android") {
+            compileOptions {
+                sourceCompatibility = JavaVersion.VERSION_17
+                targetCompatibility = JavaVersion.VERSION_17
             }
         }
     }
