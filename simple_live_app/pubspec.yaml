@@ -26,7 +26,7 @@ dependencies:
   udp: ^5.0.3 #UDP
   uuid: 4.6.0 #UUID
   webdav_client: ^1.2.2 # WebDAV
-  archive: 4.2.0 #文件压缩
+  archive: 4.4.0 #文件压缩
   crypto: ^3.0.7
 
   #Widget
