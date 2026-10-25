@@ -81,13 +81,13 @@ dependencies:
 
 dev_dependencies:
   flutter_lints: 2.0.3
-  build_runner: 2.15.1
+  build_runner: 2.4.13
   hive_generator: 2.0.1
-  flutter_launcher_icons: 0.14.4
+  flutter_launcher_icons: 0.13.1
   flutter_test:
     sdk: flutter
 
-flutter_launcher_icons:
+flutter_launcher_icons: 0.13.1
   android: true
   ios: true
   image_path: "assets/logo.png"
