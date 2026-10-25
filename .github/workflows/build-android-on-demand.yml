@@ -59,6 +59,23 @@ jobs:
           EOF
           echo "key.properties:"; cat key.properties
 
+      # auto_orientation_v2 的 build.gradle 没设 compileOptions（Java 默认 1.8），
+      # 与 KGP 2.2.20 的 Kotlin 17 冲突。直接给插件源码打补丁插入 compileOptions。
+      - name: Patch auto_orientation_v2 compileOptions (Java 17)
+        run: |
+          AO_GRADLE="$HOME/.pub-cache/hosted/pub.dev/auto_orientation_v2-2.4.6/android/build.gradle"
+          if [ -f "$AO_GRADLE" ]; then
+            if ! grep -q "compileOptions" "$AO_GRADLE"; then
+              sed -i 's|    lintOptions {|    compileOptions {\n        sourceCompatibility JavaVersion.VERSION_17\n        targetCompatibility JavaVersion.VERSION_17\n    }\n\n    lintOptions {|' "$AO_GRADLE"
+              echo "Patched $AO_GRADLE:"
+              grep -A 3 "compileOptions" "$AO_GRADLE"
+            else
+              echo "compileOptions already present, skip"
+            fi
+          else
+            echo "WARN: $AO_GRADLE not found"
+          fi
+
       - name: Build APK (release, self-signed)
         run: |
           cd simple_live_app
