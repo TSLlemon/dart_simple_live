@@ -52,7 +52,7 @@ jobs:
             -keypass simplelive-debug \
             -dname "CN=SimpleLive Debug, OU=Dev, O=Fork, L=Local, ST=Local, C=CN"
           cat > key.properties <<EOF
-          storeFile=debug-self.keystore
+          storeFile=../debug-self.keystore
           storePassword=simplelive-debug
           keyPassword=simplelive-debug
           keyAlias=simplelive
