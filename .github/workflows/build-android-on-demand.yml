@@ -28,6 +28,14 @@ jobs:
       - name: Pub get
         run: |
           cd simple_live_app
+          # 上游未提交 pubspec.lock；auto_orientation_v2 2.4.7 (2026-10-08) 的
+          # android/build.gradle 使用旧式 kotlin() DSL，与 AGP 8.9.1 / KGP 2.1.0
+          # 不兼容导致 Gradle 评估失败。钉到已验证无该问题的 2.4.6。
+          # （其他依赖仍按 pubspec.yaml 的 caret 约束解析最新版）
+          flutter pub add auto_orientation_v2:2.4.6 --dry-run >/dev/null 2>&1 || true
+          sed -i.bak 's/auto_orientation_v2: \^2\.3\.6/auto_orientation_v2: 2.4.6/' pubspec.yaml
+          rm -f pubspec.yaml.bak
+          grep auto_orientation pubspec.yaml
           flutter pub get
 
       # fork 无原仓库签名 secrets：生成自签 keystore 并写入 key.properties，
