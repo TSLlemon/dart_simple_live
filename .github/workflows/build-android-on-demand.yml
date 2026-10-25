@@ -30,14 +30,31 @@ jobs:
           cd simple_live_app
           flutter pub get
 
-      # 无签名 secrets 时使用 debug 签名，本地安装可直接用
-      - name: Build APK (arm64, debug-signed release)
+      # fork 无原仓库签名 secrets：生成自签 keystore 并写入 key.properties，
+      # 满足 build.gradle.kts 的 release signingConfig 读取。
+      - name: Generate debug keystore and key.properties
+        run: |
+          cd simple_live_app/android
+          keytool -genkey -v \
+            -keystore debug-self.keystore \
+            -storetype PKCS12 \
+            -alias simplelive \
+            -keyalg RSA -keysize 2048 -validity 10950 \
+            -storepass simplelive-debug \
+            -keypass simplelive-debug \
+            -dname "CN=SimpleLive Debug, OU=Dev, O=Fork, L=Local, ST=Local, C=CN"
+          cat > key.properties <<EOF
+          storeFile=debug-self.keystore
+          storePassword=simplelive-debug
+          keyPassword=simplelive-debug
+          keyAlias=simplelive
+          EOF
+          echo "key.properties:"; cat key.properties
+
+      - name: Build APK (release, self-signed)
         run: |
           cd simple_live_app
           flutter build apk --release --split-per-abi
-        env:
-          ORG_GRADLE_PROJECT_DEBUG_KEYSTORE_PWD: debug
-          ORG_GRADLE_PROJECT_DEBUG_KEY_PWD: debug
 
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v4
